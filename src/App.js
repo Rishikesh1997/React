@@ -1,32 +1,28 @@
-// import FalseComponent from "./FalseComponent";
-// import TrueComponent from "./TrueComponent";
-
-
-// function App() {
-//   const name = "Ankur";
-//   return (
-//         <div>
-//           <h1>From App</h1>
-//           {/* {name === "Ankur" ? <TrueComponent /> : <FalseComponent />} */}
-         
-//           {true && <TrueComponent />}
-//         </div>
-//       );
-// }
-
-// export default App;
-
-//----------------------------//
-import ConditionalComponent from "./ConditionalComponent";
+import { Routes, Route } from 'react-router-dom';
+import './App.css';
+import Body from './Body';
+import Footer from './Footer';
+import Header from './Header';
+import Nav from './Nav';
+import Posts from './Posts';
+import ToDos from './ToDos';
+import Users from './Users';
 
 function App() {
-   
-    return (
-          <div>
-            <h1>From App</h1>
-           <ConditionalComponent />
-          </div>
-        );
-  }
-  
-  export default App;
+  return (
+    <>
+    
+    <Header />
+    <Nav />
+    <Routes>
+      <Route path={'/todos'} element={<ToDos />} />
+      <Route path={'/posts'} element={<Posts />} />
+      <Route path={'/users'} element={<Users />} />
+    </Routes>
+    {/* <Body />
+    <Footer /> */}
+    </>
+  );
+}
+
+export default App;
