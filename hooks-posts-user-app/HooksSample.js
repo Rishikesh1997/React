@@ -3,8 +3,15 @@ import { useEffect, useState } from "react";
 
 export default () => {
   const [postsList, setPostsList] = useState([]);
+
   const [title, setTitle] = useState("");
+
   const [body, setBody] = useState("");
+
+  const [postId, setPostId] = useState(0);
+
+  const [isEditMode, setIsEditMode] = useState(false);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -29,21 +36,68 @@ export default () => {
   const onFormSubmit = (event) => {
     event.preventDefault();
     console.log(title, body);
+    if (!isEditMode) {
+      //code to add new records
+      axios
+        .post("https://jsonplaceholder.typicode.com/posts", {
+          title,
+          body,
+          userId: 1,
+        })
+        .then((response) => {
+          console.log(response);
+          alert("Added...!");
+          //fetch the data again
+          fetchData("");
+          //reset from
+          setTitle("");
+          setBody("");
+        });
+    } else {
+      //code to edit the records
+      if (postId > 0) {
+        axios
+          .put("https://jsonplaceholder.typicode.com/posts/" + postId, {
+            id: postId,
+            title,
+            body,
+            userId: 1,
+          })
+          .then((response) => {
+            if (response) {
+              fetchData();
+              alert("Updated...!");
+              onResetClickHandler();
+            }
+          });
+      }
+    }
+  };
+
+  const onDeleteClickHandler = (id) => {
     axios
-      .post("https://jsonplaceholder.typicode.com/posts", {
-        title,
-        body,
-        userId: 1,
-      })
+      .delete("https://jsonplaceholder.typicode.com/posts/" + id)
       .then((response) => {
-        console.log(response);
-        alert("Added");
-        //fetch the data again
+        alert("Deleted...!");
         fetchData("");
-        //reset from
-        setTitle("");
-        setBody("");
       });
+  };
+
+  const onEditClickHandler = (postObject) => {
+    console.log(postObject);
+    setIsEditMode(true);
+    setTitle(postObject.title);
+    setBody(postObject.body);
+    setPostId(postObject.id);
+  };
+
+  const onResetClickHandler = (event) => {
+    if (event) {
+      event.preventDefault();
+    }
+    setIsEditMode(false);
+    setTitle("");
+    setBody("");
   };
 
   return (
@@ -56,7 +110,8 @@ export default () => {
         <label>Body:</label>
         <input name="body" value={body} onChange={onBodyChange} />
         <br />
-        <button type="submit">Submit</button>
+        <button type="submit">{isEditMode ? "Update" : "Submit"}</button>
+        {isEditMode && <button onClick={onResetClickHandler}>Reset</button>}
       </form>
       <table>
         <thead>
@@ -73,6 +128,27 @@ export default () => {
                 <td>{post.id}</td>
                 <td>{post.title}</td>
                 <td>{post.body}</td>
+
+                <td>
+                  <button
+                    onClick={() => {
+                      onDeleteClickHandler(post.id);
+                    }}
+                  >
+                    Delete
+                  </button>
+                </td>
+
+                <td>
+                  <button
+                    onClick={() => {
+                      onEditClickHandler(post);
+                    }}
+                  >
+                    Edit
+                  </button>
+                </td>
+                
               </tr>
             );
           })}
