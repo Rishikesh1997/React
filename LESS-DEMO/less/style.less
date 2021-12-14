@@ -1,0 +1,26 @@
+@background-color: rgba(252, 252, 136, 0.541);
+@primary-color: rgba(240, 140, 140, 0.555);
+@secondary-color: rgba(61, 61, 155, 0.192);
+
+body {
+  background-color: @background-color;
+}
+
+.button {
+  padding: 10px;
+  color: whitesmoke;
+  background-color: gray;
+}
+
+.primary-button:extend(.button) {
+  background-color: #colors[primary];
+}
+
+.secondary-button:extend(.button) {
+  background-color: #colors[secondary];
+}
+
+#colors() {
+  primary: rgba(103, 250, 147, 0.555);
+  secondary: rgba(114, 232, 248, 0.678);
+}

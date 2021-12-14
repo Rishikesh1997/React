@@ -1,0 +1,16 @@
+body {
+  background-color: rgba(252, 252, 136, 0.541);
+}
+.button,
+.primary-button,
+.secondary-button {
+  padding: 10px;
+  color: whitesmoke;
+  background-color: gray;
+}
+.primary-button {
+  background-color: rgba(103, 250, 147, 0.555);
+}
+.secondary-button {
+  background-color: rgba(114, 232, 248, 0.678);
+}
